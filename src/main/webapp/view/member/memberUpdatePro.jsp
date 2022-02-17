@@ -25,14 +25,16 @@ if(login == null || login.trim().equals("")) { %>
 String pass = request.getParameter("pass");
 String tel = request.getParameter("tel");
 String email = request.getParameter("email");
+String picture = request.getParameter("picture");
 
 MemberDao md = new MemberDao();
 Member mem = md.selectOne(login);
 
 mem.setEmail(email);
 mem.setTel(tel);
+mem.setPicture(picture);
 
-
+System.out.println(mem);
 
 if(mem.getPass().equals(pass)){
 	num = md.memberUpdate(mem);

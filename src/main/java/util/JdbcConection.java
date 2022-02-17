@@ -25,7 +25,6 @@ public class JdbcConection {
 	public static void close(Connection con, PreparedStatement pstmt, ResultSet rs) {
 		try {
 			if(con != null) {
-				con.commit();
 				con.close();
 			}
 			if(pstmt != null) pstmt.close();

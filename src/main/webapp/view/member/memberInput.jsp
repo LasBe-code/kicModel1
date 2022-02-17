@@ -5,23 +5,91 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-</head>
-<body>
-
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/ajax.js"></script>
 <script>
 function win_upload(){
 	
 	const op = "width=500, height=150, left=50, top=150"
 	open('<%=request.getContextPath()%>/single/pictureForm.jsp', '', op)
+}
+</script>
+<script>
+function inputchk(f){
+	let result = document.querySelector("#result")
+	if(f.id.value==""){
+		alert("아이디를 입력하세요")
+		f.id.focus()
+		return false
+	}
+	if(f.chk.value!='ok'){
+		alert(result.innerHTML)
+		f.id.focus()
+		return false
+	}
+	if(f.pass.value==""){
+		alert("비밀번호를 입력하세요")
+		f.pass.focus()
+		return false
+	}
+	if(f.name.value==""){
+		alert("이름을 입력하세요")
+		f.name.focus()
+		return false
+	}
+	if(f.gender.value==""){
+		alert("성별을 입력하세요")
+		return false
+	}
+	if(f.tel.value==""){
+		alert("전화번호를 입력하세요")
+		f.tel.focus()
+		return false
+	}
+	if(f.email.value==""){
+		alert("이메일을 입력하세요")
+		f.email.focus()
+		return false
+	}
+	return true
+}
+function idChk(){
+	const id = document.f.id.value
+	let result = document.querySelector("#result")
+	const param = "id="+id
 	
+	if(id.length<8) {
+		result.style.color='red'
+		result.innerHTML = 'id는 8자리 이상 입력 하세요'
+	} else {
+		ajax("<%=request.getContextPath()%>/single/readId.jsp", param, callback, 'GET')
+	}
+}
+function callback(){
+	if(this.readyState == 4 && this.status == 200){
+		let result = document.querySelector("#result")
+		let chk = this.responseText.trim()
+		console.log(chk)
+		if(chk=='false'){
+			result.style.color = 'blue'
+			result.innerHTML = '사용가능한 id'
+			document.f.chk.value="ok" 
+		} else {
+			result.style.color = 'red'
+			result.innerHTML = '사용중인 id'
+			document.f.chk.value="no"
+		}
+	}
 }
 </script>
 
+</head>
+<body>
 <hr>
 	<div class="container">
 		<h2   id="center">회원가입</h2>
-		<form action="<%=request.getContextPath()%>/view/member/memberPro.jsp" method="post" name="f">
+		<form action="<%=request.getContextPath()%>/view/member/memberPro.jsp" method="post" name="f" onsubmit="return inputchk(this)">
 			<input type="hidden" name="picture">
+			<input type="hidden" name="chk">
 			<div class="row">
 			
 				<div class="col-3   bg-light">
@@ -32,8 +100,8 @@ function win_upload(){
 				<div class="col-9">
 					<div class="form-group">
 		
-						<label for="id">아이디:</label> 
-						<input type="text" class="form-control" name="id"> 
+						<label for="id">아이디:&nbsp;&nbsp;<span id="result">8자리 이상 가능 합니다.</span></label> 
+						<input type="text" class="form-control" name="id" onkeyup="idChk()"> 
 						
 						<label for="pass">비밀번호:</label>
 						<input type="password" class="form-control" name="pass"> 
@@ -55,7 +123,7 @@ function win_upload(){
 			</div>
 			<div class="form-group">
 				<label for="tel">이메일:</label> 
-				<input type="text" class="form-control" name="email">
+				<input type="text" class="form-control" id="email" name="email">
 			</div>
 		
 			<div id="center" style="padding: 3px;">

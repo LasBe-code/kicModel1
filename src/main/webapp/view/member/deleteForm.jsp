@@ -17,6 +17,7 @@ if(login == null || login.trim().equals("")){ %>
 <%} else { %>
 	<div class="container">
 		<h2   id="center">회원탈퇴</h2>
+		<!-- onsubmit : true면 submit -->
 		<form action="<%=request.getContextPath()%>/view/member/deletePro.jsp" method="post">
 			<div class="form-group">
 				<label>ID:</label> 
