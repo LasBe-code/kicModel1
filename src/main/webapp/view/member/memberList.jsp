@@ -12,12 +12,6 @@
 <%
 MemberDao md = new MemberDao();
 List<Member> li = md.memberList();
-
-
-
-
-
-
 %>
 <body>
 	<hr>
